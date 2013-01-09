@@ -8,29 +8,27 @@ fi
 gt () {
 	case $1 in
 		-d)
-			_purge_line "$DIRS" "export DIR_$2="
-			unset "DIR_$2"
+			temp=`mktemp -t .gtDirs-XXXXXX` 
+			sed "/^$2=/"d $DIRS > $temp
+			mv $temp $DIRS
+			rm -f $temp
 			;;
 		-a)
 			CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
-			_purge_line "$DIRS" "export DIR_$2="
-			echo "export DIR_$2=\"$CURDIR\"" >> $DIRS
+			echo "$2=$CURDIR" >> $DIRS
 			;;
 		-l)
-			source $DIRS
-			env | grep "^DIR_" | cut -c5- | sort | grep "^.*="
+			cat $DIRS
 			;;
 		*)   
-			source $DIRS
-			cd "$(eval $(echo echo $(echo \$DIR_$1)))"
-
+			cd "$(awk -F '=' '/^$1=/ {print $2 }' $DIRS)"
 	esac
 }
 
 function _l {
-    source $SDIRS
-    env | grep "^DIR_" | cut -c5- | sort | grep "^.*=" | cut -f1 -d "=" 
+awk -F '=' ' {print $1} ' $DIRS
 }
+
 
 function _comp {
     local curw
@@ -44,23 +42,6 @@ function _comp {
 function _compzsh {
     reply=($(_l))
 }
-
-function _purge_line {
-    if [ -s "$1" ]; then
-        # safely create a temp file
-        t=$(mktemp -t bashmarks.XXXXXX) || exit 1
-        trap "rm -f -- '$t'" EXIT
-
-        # purge line
-        sed "/$2/d" "$1" > "$t"
-        mv "$t" "$1"
-
-        # cleanup temp file
-        rm -f -- "$t"
-        trap - EXIT
-    fi
-}
-
 
 
 if [ $ZSH_VERSION ]; then
