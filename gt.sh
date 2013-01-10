@@ -14,14 +14,14 @@ gt () {
 			rm -f $temp
 			;;
 		-a)
-			CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
+			CURDIR=$(echo $PWD)
 			echo "$2=$CURDIR" >> $DIRS
 			;;
 		-l)
 			cat $DIRS
 			;;
 		*)   
-			cd "$(awk -F '=' '/^$1=/ {print $2 }' $DIRS)"
+			cd `awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS`
 	esac
 }
 
