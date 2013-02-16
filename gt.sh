@@ -30,7 +30,7 @@ gt () {
 		*)   
 			if [ -z $1 ]; then
 				print_usage
-			elif [[ ! -z `awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS` ]]; then
+			elif [[ ! -z dir=`awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS` ]]; then
 				cd `awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS`
 				else
 					echo 'error: bookmark name not found'
@@ -43,8 +43,7 @@ gt () {
 #validate names
 function validate_bookmark_name {
 	result="" 
-	if [ -z $2 ]
-		then
+	if [ -z $2 ]; then
 		result='error: bookmark name required!'
 		echo $result
 	elif [ "$2" != "$(echo $2 | sed 's/[^A-Za-z0-9_]//g')" ]; then
@@ -63,10 +62,16 @@ function print_usage {
         echo '<bookmark_name>    - Jump to the bookmark'   
 }
 
+function _l {
+	awk -F '=' ' {print $1} ' $DIRS
+}
+
 
 function _comp {
     local curw
     COMPREPLY=()
+    curw=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=($(compgen -W '`_l`' -- $curw))
     return 0
 }
 
