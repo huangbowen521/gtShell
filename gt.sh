@@ -15,7 +15,7 @@ gt () {
 			rm -f $temp
 			;;
 		-a)
-			isValidName "$@"
+			validate_bookmark_name "$@"
 			if [ -z "$result" ]; then
 				CURDIR=$(echo $PWD)
 				echo "$2=$CURDIR" >> $DIRS
@@ -25,11 +25,11 @@ gt () {
 			cat $DIRS
 			;;
 		-h)
-			print_help
+			print_usage
 			;;
 		*)   
 			if [ -z $1 ]; then
-				print_help
+				print_usage
 			elif [[ ! -z `awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS` ]]; then
 				cd `awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS`
 				else
@@ -41,25 +41,25 @@ gt () {
 }
 
 #validate names
-function isValidName {
+function validate_bookmark_name {
 	result="" 
 	if [ -z $2 ]
 		then
-		result='error: name required!'
+		result='error: bookmark name required!'
 		echo $result
 	elif [ "$2" != "$(echo $2 | sed 's/[^A-Za-z0-9_]//g')" ]; then
-		result='error: name is not valid'
+		result='error: bookmark name is invalid!'
 		echo $result
 	fi
 
 }
 
-function print_help {
+function print_usage {
 	    echo 'Usage:'
         echo '-a <bookmark_name> - Saves the current directory as "bookmark_name"'
         echo '-d <bookmark_name> - Deletes the bookmark'
         echo '-l                 - Lists all available bookmarks'
-        echo '-h(-help,--help)   - List usage'
+        echo '-h(-help,--help)   - Lists usage'
         echo '<bookmark_name>    - Jump to the bookmark'   
 }
 
