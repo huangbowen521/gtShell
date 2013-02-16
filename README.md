@@ -12,15 +12,15 @@ gtShell is a shell script that allows you to save and jump to commonly used dire
 
 **Usage:**
 
-* `gt -a <bookmark_name>` - Saves the current directory as "bookmark_name"'
+* `gt -a <bookmark_name>` - Saves the current directory as "bookmark_name"
  
-* `gt -d <bookmark_name>` - Deletes the bookmark'
+* `gt -d <bookmark_name>` - Deletes the bookmark
  
-* `gt -l`                 - Lists all available bookmarks'
+* `gt -l`                 - Lists all available bookmarks
  
 * `gt -h` - Lists usage
 
-* `gt <bookmark_name>`    - Jump to the bookmark' 
+* `gt <bookmark_name>`    - Jump to the bookmark
 
 
 **Example:**
