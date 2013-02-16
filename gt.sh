@@ -17,8 +17,8 @@ gt () {
 		-a)
 			validate_bookmark_name "$@"
 			if [ -z "$result" ]; then
-				CURDIR=$(echo $PWD)
-				echo "$2=$CURDIR" >> $DIRS
+				CURDIR=$( $PWD)
+				 "$2=$CURDIR" >> $DIRS
 			fi
 			;;
 		-l)
@@ -30,10 +30,10 @@ gt () {
 		*)   
 			if [ -z $1 ]; then
 				print_usage
-			elif [[ ! -z dir=`awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS` ]]; then
+			elif [[ ! -z `awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS` ]]; then
 				cd `awk -F '=' '/^'"$1"'=/ {print $2 }' $DIRS`
 				else
-					echo 'error: bookmark name not found'
+					 'error: bookmark name not found'
 
 			fi
 	
@@ -45,21 +45,21 @@ function validate_bookmark_name {
 	result="" 
 	if [ -z $2 ]; then
 		result='error: bookmark name required!'
-		echo $result
-	elif [ "$2" != "$(echo $2 | sed 's/[^A-Za-z0-9_]//g')" ]; then
+		 $result
+	elif [ "$2" != "$( $2 | sed 's/[^A-Za-z0-9_]//g')" ]; then
 		result='error: bookmark name is invalid!'
-		echo $result
+		 $result
 	fi
 
 }
 
 function print_usage {
-	    echo 'Usage:'
-        echo '-a <bookmark_name> - Saves the current directory as "bookmark_name"'
-        echo '-d <bookmark_name> - Deletes the bookmark'
-        echo '-l                 - Lists all available bookmarks'
-        echo '-h(-help,--help)   - Lists usage'
-        echo '<bookmark_name>    - Jump to the bookmark'   
+	     'Usage:'
+         '-a <bookmark_name> - Saves the current directory as "bookmark_name"'
+         '-d <bookmark_name> - Deletes the bookmark'
+         '-l                 - Lists all available bookmarks'
+         '-h(-help,--help)   - Lists usage'
+         '<bookmark_name>    - Jump to the bookmark'   
 }
 
 function _l {
